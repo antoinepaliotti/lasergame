@@ -1,6 +1,23 @@
 security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        App\Entity\Customer:
+            algorithm: bcrypt
+
+
+
+
+
+
     providers:
+        customer_provider:
+            entity:
+                class: App\Entity\Customer
+                property: nickname
+
+
+
+
         in_memory: { memory: ~ }
     firewalls:
         dev:
@@ -8,6 +25,18 @@ security:
             security: false
         main:
             anonymous: true
+            form_login:
+              login_path: security_login
+              check_path: security_login
+              default_target_path: index
+              username_parameter: app_login[nickname]
+              password_parameter: app_login[password]
+            provider: customer_provider
+            logout_on_user_change: true
+            logout:
+              path: /deconnexion
+              target: /login
+
 
             # activate different ways to authenticate
 

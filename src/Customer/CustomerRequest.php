@@ -1,73 +1,60 @@
 <?php
 
-namespace App\Entity;
+namespace App\Customer;
 
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use DateTime;
+
+use Symfony\Component\Validator\Constraints as Assert;
 
 
-/**
- *
- * @ORM\Entity(repositoryClass="App\Repository\CustomerRepository")
- */
-class Customer implements UserInterface
+class CustomerRequest
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Saisissez votre prénom")
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Saisissez votre nom d'utilisateur")
      */
     private $nickname;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Saisissez votre adresse")
      */
     private $adress;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Saisissez votre téléphone")
      */
     private $phone;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @Assert\NotBlank(message="Saisissez votre date de naissance")
      */
     private $birthdate;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
     private $center_id;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
     private $card_id;
-
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Saisissez votre mot de passe")
      */
     private $password;
 
-    /**
-     * @ORM\Column(type="array")
-     */
     private $roles;
 
-    public function getId()
+    /**
+     * CustomerRequest constructor.
+     * @param $roles
+     */
+    public function __construct(string $role = 'ROLE USER')
     {
-        return $this->id;
+        $this->roles[] = $role;
     }
+
 
     public function getName(): ?string
     {
