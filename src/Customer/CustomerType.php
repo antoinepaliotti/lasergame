@@ -13,6 +13,8 @@
  */
 namespace App\Customer;
 
+use App\Entity\Center;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -79,8 +81,19 @@ class CustomerType extends AbstractType
                     'placeholder' => 'Adresse'
 
                 ]
-
             ])
+
+            ->add('center_id', EntityType::class, array(
+                // looks for choices from this entity
+                'class' => Center::class,
+
+                // uses the User.username property as the visible option string
+                'choice_label' => 'name',
+                'expanded' => false,
+                'multiple' => false,
+                'label'    => 'Nom du centre',
+
+            ))
 
             ->add('phone', TextType::class, [
 

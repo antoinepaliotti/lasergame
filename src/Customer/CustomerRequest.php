@@ -2,6 +2,7 @@
 
 namespace App\Customer;
 
+use App\Entity\Center;
 use DateTime;
 
 use Symfony\Component\Validator\Constraints as Assert;
@@ -45,6 +46,8 @@ class CustomerRequest
     private $password;
 
     private $roles;
+
+
 
     /**
      * CustomerRequest constructor.
@@ -116,12 +119,12 @@ class CustomerRequest
         return $this;
     }
 
-    public function getCenterId(): ?int
+    public function getCenterId()
     {
         return $this->center_id;
     }
 
-    public function setCenterId(int $center_id): self
+    public function setCenterId(Center $center_id): self
     {
         $this->center_id = $center_id;
 

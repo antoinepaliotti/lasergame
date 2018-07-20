@@ -1,10 +1,9 @@
 <body>
 
+
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
 <h1>Bienvenue sur le site du laser game</h1>
-
-
-
-
 
 
 <h2>{{ app.user.name }}</h2>
@@ -14,7 +13,13 @@
 
 <hr>
 
+{% else %}
 
+    <a href="{{path('security_login')}}">
+        Veuillez vous connecter
+    </a>
+
+{%  endif %}
 
 
 </body>

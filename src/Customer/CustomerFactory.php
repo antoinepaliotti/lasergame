@@ -50,7 +50,7 @@ class CustomerFactory
 
         $customer->setRoles($request->getRoles());
 
-        $customer->setCenterId(1);
+        $customer->setCenterId($request->getCenterId()->getId());
 
         $customer->setPassword($this->encoder->encodePassword($customer, $request->getPassword()));
 
