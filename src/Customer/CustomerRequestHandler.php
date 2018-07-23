@@ -3,7 +3,10 @@
 
 namespace App\Customer;
 
+use App\Entity\Card;
 use Doctrine\ORM\EntityManagerInterface;
+
+use Symfony\Component\HttpFoundation\Request;
 
 use App\Entity\Customer;
 
@@ -29,8 +32,9 @@ class CustomerRequestHandler
 
         $this->dispatcher = $dispatcher;
 
-    }    public function registerAsUser(CustomerRequest $request) : Customer
+    }
 
+    public function registerAsUser(CustomerRequest $request) : Customer
     {
 
         # On appelle notre factory pour créer notre objet User
@@ -46,5 +50,6 @@ class CustomerRequestHandler
         return $user;
 
     }
+
 
 }

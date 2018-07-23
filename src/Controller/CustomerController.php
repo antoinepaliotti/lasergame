@@ -59,8 +59,7 @@ class CustomerController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
 
-
-           $customerRequestHandler->registerAsUser($customer);            # Flash Messages
+           $customerRequestHandler->registerAsUser($customer);        # Flash Messages
 
            //$this->addFlash('notice', 'Félicitations, vous êtes maintenant inscrit !');            # Redirection sur l'accueil
 

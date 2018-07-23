@@ -17,9 +17,9 @@ class Card
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
-    private $customer_id;
+    private $customer_nickname;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -31,17 +31,23 @@ class Card
         return $this->id;
     }
 
-    public function getCustomerId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getCustomerNickname()
     {
-        return $this->customer_id;
+        return $this->customer_nickname;
     }
 
-    public function setCustomerId(int $customer_id): self
+    /**
+     * @param mixed $customer_nickname
+     */
+    public function setCustomerNickname($customer_nickname): void
     {
-        $this->customer_id = $customer_id;
-
-        return $this;
+        $this->customer_nickname = $customer_nickname;
     }
+
+
 
     public function getCardNumber(): ?string
     {
