@@ -9,7 +9,9 @@
 namespace App\Controller;
 
 
+use App\Card\CardManager;
 use App\Entity\Customer;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -37,6 +39,23 @@ class HomeController extends Controller
 
 
         return $this->render('index/index.html.twig');
+    }
+
+    /**
+     * @Route("/test", name="test", methods={"GET", "POST"})
+     */
+    public function testcode(EntityManagerInterface $em)
+    {
+        $cardmanager = new CardManager($em);
+
+        $finalcode = $cardmanager->testgenerateCode(1113744137);
+
+        return $this->render('registration.html.twig',[
+            'code' => $finalcode
+        ]);
+
+
+
     }
 
 }

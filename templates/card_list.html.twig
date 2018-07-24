@@ -1,0 +1,32 @@
+<body>
+
+<h1>Voici les cartes créées :</h1>
+
+<table>
+
+    <tr>
+        <th>Cartes :</th>
+    </tr>
+
+    {% for card in cards %}
+
+        <tr>
+            <td>Carte id : {{ card.id }}</td>
+        </tr>
+        <tr>
+            <td>Utilisateur de la carte : {{ card.customernickname }}<hr></td>
+
+        </tr>
+
+    {% endfor %}
+
+
+
+
+</table>
+
+
+</body>
+
+
+

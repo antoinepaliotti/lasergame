@@ -4,23 +4,29 @@
 
 ### Le lasergame offre la possibilité aux nouveaux clients de leur attribuer une carte à la fin de leur séance
 
-### Cette carte devra être activée sur l'application web.
-
 ### Les cartes sont crées par un responsable du lasergame.
+### Les cartes sont créées numerotées mais sans client rattaché
+### La carte devra être activée sur l'application web par le client
 
-### Les cartes sont créées "vierges"
+
+
+
 
 ### To be continued....
 
-# Pour le 24-07
+# Pour le 25-07
+
+## Rajouter un champ user_id sur la carte
+## Tests Unitaires
 
 ## UML a faire
-
-## Créer l'interface admin pour créer des cartes.
-## -> Gérer le role_admin
-
-
 ## API pour rattacher la carte à un user.
 ## --> CRUD 
+## Définir le role employee
+
+### Créer l'interface admin pour créer des cartes. OK
+### -> Gérer le role_admin OK
+
+
 
 

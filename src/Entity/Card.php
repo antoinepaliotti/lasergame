@@ -26,6 +26,11 @@ class Card
      */
     private $card_number;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $user_id;
+
     public function getId()
     {
         return $this->id;
@@ -57,6 +62,18 @@ class Card
     public function setCardNumber(string $card_number): self
     {
         $this->card_number = $card_number;
+
+        return $this;
+    }
+
+    public function getUserId(): ?int
+    {
+        return $this->user_id;
+    }
+
+    public function setUserId(?int $user_id): self
+    {
+        $this->user_id = $user_id;
 
         return $this;
     }

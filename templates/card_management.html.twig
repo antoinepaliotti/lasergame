@@ -1,0 +1,14 @@
+<body>
+{% if add_card is defined %}
+    <p style="color:gold;">{{ add_card }}</p>
+{% endif %}
+
+
+<h1>Bienvenue sur l'interface d'administration des cartes</h1>
+
+<h3><a href="{{path('admin_add_card')}}">Créer une carte</a></h3>
+
+<h3><a href="{{path('admin_info_card')}}">Informations sur les cartes</a></h3>
+
+
+</body>
