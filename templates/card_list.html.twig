@@ -11,11 +11,10 @@
     {% for card in cards %}
 
         <tr>
-            <td>Carte id : {{ card.id }}</td>
+            <td>Carte n° : {{ card.cardnumber }}</td>
         </tr>
         <tr>
             <td>Utilisateur de la carte : {{ card.customernickname }}<hr></td>
-
         </tr>
 
     {% endfor %}
