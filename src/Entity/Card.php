@@ -27,9 +27,10 @@ class Card
     private $card_number;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\OneToOne(targetEntity="Customer")
+     * @ORM\JoinColumn(name="customer_id",referencedColumnName="id")
      */
-    private $user_id;
+    private $customer;
 
     public function getId()
     {
@@ -66,16 +67,5 @@ class Card
         return $this;
     }
 
-    public function getUserId(): ?int
-    {
-        return $this->user_id;
-    }
-
-    public function setUserId(?int $user_id): self
-    {
-        $this->user_id = $user_id;
-
-        return $this;
-    }
 }
 

@@ -4,13 +4,13 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-
+use App\Entity\User;
 
 /**
  *
  * @ORM\Entity(repositoryClass="App\Repository\CustomerRepository")
  */
-class Customer implements UserInterface
+class Customer extends User
 {
     /**
      * @ORM\Id()
@@ -19,10 +19,6 @@ class Customer implements UserInterface
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -50,36 +46,21 @@ class Customer implements UserInterface
     private $center_id;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\OneToOne(targetEntity="Card")
+     * @ORM\JoinColumn(name="card_id",referencedColumnName="id")
      */
-    private $card_id;
+    private $card;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $password;
 
-    /**
-     * @ORM\Column(type="array")
-     */
-    private $roles;
+
+
 
     public function getId()
     {
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
 
     public function getNickname(): ?string
     {
@@ -141,54 +122,6 @@ class Customer implements UserInterface
         return $this;
     }
 
-    public function getCardId(): ?int
-    {
-        return $this->card_id;
-    }
 
-    public function setCardId(?int $card_id): self
-    {
-        $this->card_id = $card_id;
 
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    public function getRoles()
-    {
-        return $this->roles;
-    }
-
-    public function getSalt()
-    {
-        return null;
-    }
-
-    public function getUsername()
-    {
-        return $this->getNickname();
-    }
-
-    public function eraseCredentials()
-    {
-
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
 }

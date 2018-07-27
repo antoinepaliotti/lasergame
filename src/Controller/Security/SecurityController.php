@@ -52,7 +52,7 @@ class SecurityController extends Controller
 
         $form = $this->createForm(LoginType::class, [
 
-            'nickname' => $authenticationUtils->getLastUsername()
+            'username' => $authenticationUtils->getLastUsername()
 
         ]);
 

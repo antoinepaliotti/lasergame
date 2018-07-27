@@ -15,7 +15,7 @@ class CustomerRequest
     /**
      * @Assert\NotBlank(message="Saisissez votre prénom")
      */
-    private $name;
+    private $username;
 
     /**
      * @Assert\NotBlank(message="Saisissez votre nom d'utilisateur")
@@ -53,20 +53,20 @@ class CustomerRequest
      * CustomerRequest constructor.
      * @param $roles
      */
-    public function __construct(string $role = 'ROLE USER')
+    public function __construct(string $role = 'ROLE_USER')
     {
         $this->roles[] = $role;
     }
 
 
-    public function getName(): ?string
+    public function getUsername(): ?string
     {
-        return $this->name;
+        return $this->username;
     }
 
-    public function setName(string $name): self
+    public function setUsername(string $name): self
     {
-        $this->name = $name;
+        $this->username = $name;
 
         return $this;
     }
@@ -165,10 +165,6 @@ class CustomerRequest
         return null;
     }
 
-    public function getUsername()
-    {
-        return $this->getNickname();
-    }
 
     public function eraseCredentials()
     {

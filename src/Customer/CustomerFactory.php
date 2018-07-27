@@ -38,7 +38,7 @@ class CustomerFactory
 
         $customer = new Customer();
 
-        $customer->setName($request->getName());
+        $customer->setUsername($request->getUsername());
 
         $customer->setNickname($request->getNickname());
 

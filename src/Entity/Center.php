@@ -31,6 +31,11 @@ class Center
      */
     private $code;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Employee",mappedBy="center")
+     */
+    private $employee;
+
     public function getId()
     {
         return $this->id;

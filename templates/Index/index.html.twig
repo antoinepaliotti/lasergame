@@ -3,14 +3,14 @@
 
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
-<h1>Bienvenue sur le site du laser game</h1>
+<h1>Bienvenue sur le site du laser game {{ app.user.username }}</h1>
 
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{path('admin_management')}}">Accéder à l'interface de management</a>
+        <br>
+    {% endif %}
 
-<h2>{{ app.user.name }}</h2>
-<h2>{{ app.user.adress }}</h2>
-<h2>{{ app.user.phone }}</h2>
-
-
+    <a href="{{path('security_logout')}}">Se déconnecter</a>
 <hr>
 
 {% else %}

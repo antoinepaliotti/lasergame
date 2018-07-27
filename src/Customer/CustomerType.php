@@ -44,7 +44,7 @@ class CustomerType extends AbstractType
 
         $builder
 
-            ->add('name', TextType::class, [
+            ->add('username', TextType::class, [
 
                 'required'  => true,
                 'label'     => 'Name',
