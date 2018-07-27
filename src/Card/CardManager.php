@@ -23,14 +23,20 @@ class CardManager
         $this->em = $em;
     }
 
-
+    /**
+     * Génération du code de la carte, à 10 chiffres
+     * @param $centerCode CODE_CENTRE
+     * @return string
+     */
     public function generateCode($centerCode)
     {
         //Génération des 9 premiers chiffres de la carte
+        //CODE_CENTRE + CODE_CARTE
         $cardCode = $this->generateCardCode();
         $code = $centerCode . $cardCode;
 
         //Génération du modulo
+        //CHECKSUM
         $modulo = $this->checksum($code);
 
         //Code final
@@ -44,30 +50,50 @@ class CardManager
         return $finalCode;
     }
 
+    /**
+     * Génération du CODE_CARTE
+     * @return int
+     */
     public function generateCardCode(){
+        //Génère un nombre aléatoire entre 100000 et 999999, afin d'être certains d'obtenir un nombre à 6 chiffres
         return rand(100000, 999999);
     }
 
+    /**
+     * Génération du CHECKSUM
+     * @param float $number CODE_CENTRE + CODE_CARTE
+     * @return int
+     */
     public function checksum(float $number){
         $sum = 0;
 
+        // On convertit le code en tableau avec chaque caractère dedans
         $chars = str_split($number);
+
+        //On parcourt caractère par caractère et on les somme
         foreach ($chars as $char) {
             $sum += $char;
         }
 
+        //On obtient le CHECKSUM, en faisant la somme trouvée modulo 9
         $modulo = $sum % 9;
 
         return $modulo;
     }
 
+    /**
+     * Vérifie si le code existe ou pas en BDD
+     * @param float $code
+     * @return bool
+     */
     public function checkCode(float $code){
         $exists = false;
         $repository = $this->em->getRepository(Card::class);
 
-        $code = $repository->findByCode($code);  /// implémenter findbycode().
+        // On cherche si le code existe en BDD
+        $code = $repository->findByCode($code);
 
-        //Le code existe en BDD
+        //Si le code existe en BDD
         if ($code !== null) {
             $exists = true;
             return $exists;
