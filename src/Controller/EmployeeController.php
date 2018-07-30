@@ -37,9 +37,38 @@ class EmployeeController extends Controller
     {
 
         return $this->render('customer_management.html.twig');
-
-
-
     }
 
+    /**
+     * @Route("/employee_create_card", name="employee_create_card", methods={"GET", "POST"})
+     * @Security("has_role('ROLE_EMPLOYEE')")
+     */
+    public function createCard(EntityManagerInterface $em)
+    {
+        $card = new Card();
+
+        $cardManager = New CardManager($em);
+
+
+        $employee = $this->get('security.token_storage')->getToken()->getUser();
+
+        dump($employee);
+
+        $centerCode = $employee->getCenter()->getCode();
+
+        $code = $cardManager->generateCode($centerCode);
+
+        $card->setCardNumber($code);
+
+        $card->setCustomerNickname('TEST');
+
+        $em->persist($card);
+
+        $em->flush();
+
+        return $this->render('customer_management.html.twig',[
+            'success' => 'Votre carte a correctement été créée !'
+        ]);
+
+    }
 }
