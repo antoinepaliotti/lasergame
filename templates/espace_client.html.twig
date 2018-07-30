@@ -1,0 +1,22 @@
+<body>
+
+
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+    <h1>Bienvenue sur l'espace client {{ app.user.username }}</h1>
+
+
+    <a href="{{path('security_logout')}}">Se déconnecter</a>
+    <hr>
+
+{% else %}
+
+    <a href="{{path('security_login')}}">
+        Veuillez vous connecter
+    </a>
+    ou
+    <a href="{{path('user_register')}}">Vous inscrire</a>
+{%  endif %}
+
+
+</body>
