@@ -85,9 +85,9 @@ class User implements UserInterface
     /**
      * @param mixed $role
      */
-    public function setRoles($role)
+    public function setRoles(array $role)
     {
-        $this->roles[] = $role;
+        $this->roles = $role;
     }
 
 

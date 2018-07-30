@@ -47,4 +47,14 @@ class CenterRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByCode($value): ?Center
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.code = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 }

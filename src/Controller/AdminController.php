@@ -13,7 +13,9 @@ use App\Entity\Card;
 use App\Entity\Center;
 use App\Entity\Employee;
 use App\Form\AddCardType;
+use App\Form\AddCenter;
 use App\Form\AddEmployee;
+use App\Form\DeleteCenter;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -97,7 +99,7 @@ class AdminController extends Controller
 
             $employee->setPassword($employee->encoder->encodePassword($employee,$test['password']));
 
-            $employee->setRoles('ROLE_EMPLOYEE');
+            $employee->setRoles(array('ROLE_EMPLOYEE'));
 
             $em->persist($employee);
         }
@@ -167,4 +169,85 @@ class AdminController extends Controller
     }
 
 
+    /**
+     * @Route("/center_management", name="admin_center_management", methods={"GET", "POST"})
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function center_management()
+    {
+        return $this->render('centermanagement.html.twig');
+    }
+
+    /**
+     * @Route("/center_add", name="admin_add_center", methods={"GET", "POST"})
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function add_center(EntityManagerInterface $em,Request $request)
+    {
+        $form = $this->createForm(AddCenter::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $repository = $em->getRepository(Center::class);
+
+            //$test = $request->get('add_employee');
+            $test = $form->getData();
+
+            $center = new Center();
+
+            $center->setName($test['name']);
+
+            $center->setCity($test['city']);
+
+            $center->setCode($test['code']);
+
+            // On cherche si le code existe en BDD
+            $code = $repository->findByCode($test['code']);
+
+            //Si le code n'existe pas en BDD
+            if ($code === null) {
+                $em->persist($center);
+            }
+
+
+        }
+
+        $em->flush();
+
+        return $this->render('add_center.html.twig',[
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/center_delete", name="admin_delete_center", methods={"GET","POST"})
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function delete_center(EntityManagerInterface $em,Request $request)
+    {
+        $form = $this->createForm(DeleteCenter::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            //$test = $request->get('add_employee');
+            $test = $form->getData();
+
+            $center = $this->getDoctrine()
+                ->getRepository(Center::class)
+                ->find($test['center_id']);
+
+            $em->remove($center);
+
+        }
+
+        $em->flush();
+
+        return $this->render('delete_center.html.twig',[
+            'form' => $form->createView()
+        ]);
+
+
+    }
 }
