@@ -73,4 +73,16 @@ class CustomerController extends Controller
 
     }
 
+
+    /**
+     * @Route("/espace_client", name="espace_client", methods={"GET", "POST"})
+
+     */
+    public function attach_card()
+    {
+        return $this->render('espace_client.html.twig');
+
+    }
+
+
 }

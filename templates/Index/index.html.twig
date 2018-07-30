@@ -16,6 +16,13 @@
         <br>
     {% endif %}
 
+
+    {% if is_granted('ROLE_EMPLOYEE') %}
+    {% else %}
+        <a href="{{path('espace_client')}}">Accéder à votre espace client<br></a>
+    {% endif %}
+
+
     <a href="{{path('security_logout')}}">Se déconnecter</a>
 <hr>
 
