@@ -103,9 +103,16 @@ class AdminController extends Controller
             $employee->setRoles(array('ROLE_EMPLOYEE'));
 
             $em->persist($employee);
+
+            $em->flush();
+
+            return $this->render('employeemanagement.html.twig',[
+                'success' => 'Employé créé'
+            ]);
+
+
         }
 
-        $em->flush();
 
         return $this->render('add_employee.html.twig',[
             'form' => $form->createView()
@@ -301,6 +308,20 @@ class AdminController extends Controller
         return $this->render('add_center.html.twig',[
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/employee_list", name="admin_list_employee", methods={"GET", "POST"})
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function listEmployee(EntityManagerInterface $em)
+    {
+        $employees = $em->getRepository(Employee::class)->findAll();
+
+        return $this->render('list_employee.html.twig',[
+           'employees' => $employees
+        ]);
+
     }
 
 

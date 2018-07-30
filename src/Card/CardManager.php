@@ -55,7 +55,7 @@ class CardManager
      * @return int
      */
     public function generateCardCode(){
-        //Génère un nombre aléatoire entre 100000 et 999999, afin d'être certains d'obtenir un nombre à 6 chiffres
+        //Génère un nombre aléatoire entre 100000 et 999999, afin d'être certain d'obtenir un nombre à 6 chiffres
         return rand(100000, 999999);
     }
 
