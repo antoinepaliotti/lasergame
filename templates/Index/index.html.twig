@@ -10,6 +10,12 @@
         <br>
     {% endif %}
 
+
+    {% if is_granted('ROLE_EMPLOYEE') %}
+        <a href="{{path('customer_management')}}">Accéder au module de gestion des clients</a>
+        <br>
+    {% endif %}
+
     <a href="{{path('security_logout')}}">Se déconnecter</a>
 <hr>
 
