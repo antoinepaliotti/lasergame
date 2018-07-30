@@ -3,7 +3,15 @@
 
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
+    {% if success is defined %}
+        <p style="color:gold;">{{ success }}</p>
+    {% endif %}
+
     <h1>Bienvenue sur l'espace client {{ app.user.username }}</h1>
+
+
+
+
 
     <a href="{{path('customer_attach_card')}}">Rattacher une carte à son compte<br></a>
 

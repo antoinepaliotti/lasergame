@@ -48,7 +48,7 @@ class SecurityController extends Controller
 
             return $this->redirectToRoute('index');
 
-        }        # Récupération du formulaire
+        }# Récupération du formulaire
 
         $form = $this->createForm(LoginType::class, [
 
@@ -58,8 +58,11 @@ class SecurityController extends Controller
 
         # Récupération du message d'érreur si il y en a un
 
-        $error = $authenticationUtils->getLastAuthenticationError();        #Dernier email saisi par l'utilisateur
+        $error = $authenticationUtils->getLastAuthenticationError();#Dernier email saisi par l'utilisateur
 
+
+
+        $errormessage = 'Nom d\'utilisateur ou mot de passe incorrect';
         //$lastEmail = $authenticationUtils->getLastUsername();        #Affichage du formulaire
 
         return $this->render('security/login.html.twig', [

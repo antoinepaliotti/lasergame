@@ -122,6 +122,22 @@ class Customer extends User
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCard()
+    {
+        return $this->card;
+    }
+
+    /**
+     * @param mixed $card
+     */
+    public function setCard($card): void
+    {
+        $this->card = $card;
+    }
+
 
 
 }

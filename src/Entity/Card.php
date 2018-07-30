@@ -40,6 +40,22 @@ class Card
     /**
      * @return mixed
      */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * @param mixed $customer
+     */
+    public function setCustomer($customer): void
+    {
+        $this->customer = $customer;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getCustomerNickname()
     {
         return $this->customer_nickname;

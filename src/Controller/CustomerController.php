@@ -18,6 +18,8 @@ use App\Customer\CustomerRequest;
 use App\Customer\CustomerRequestHandler;
 use App\Customer\CustomerType;
 
+use App\Entity\Card;
+use App\Entity\Customer;
 use App\Form\AttachCard;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -94,25 +96,61 @@ class CustomerController extends Controller
      */
     public function attach_card(EntityManagerInterface $em,Request $request)
     {
-        $form = $this->createForm(AttachCard::class);
+        $customer = $this->get('security.token_storage')->getToken()->getUser();
 
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            //$test = $request->get('add_employee');
-            $test = $form->getData();
-
-
-
-            dump($test);
+        if ($customer->getCard() !== null)
+        {
+            return $this->render('espace_client.html.twig', [
+                'success' => 'Vous possédez déja une carte !',
+            ]);
         }
+        else
+            {
+            $form = $this->createForm(AttachCard::class);
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                //$test = $request->get('add_employee');
+                $test = $form->getData();
+
+                $card_number = $test['card_number'];
 
 
+                $card = $this->getDoctrine()
+                    ->getRepository(Card::class)
+                    ->findByCode($card_number);
 
-        return $this->render('customer_attach_card.html.twig',[
-            'form' => $form->createView(),
-        ]);
+                $customer = $this->getDoctrine()->getRepository(Customer::class)->find($this->get('security.token_storage')->getToken()->getUser()->getId());
 
+                if ($card !== null) {
+                    // $card->setCustomer($employee = $this->get('security.token_storage')->getToken()->getUser()->getId());
+
+                    $card->setCustomer($this->get('security.token_storage')->getToken()->getUser());
+                    $customer->setCard($card);
+
+                    $em->persist($customer);
+                    $em->persist($card);
+                    $em->flush();
+
+                    return $this->render('espace_client.html.twig', [
+                        'success' => 'Carte correctement rattachée',
+                    ]);
+                } else {
+                    return $this->render('customer_attach_card.html.twig', [
+                        'success' => 'Impossible de rattacher cette carte (Elle n\'existe pas)',
+                        'form' => $form->createView()
+                    ]);
+                }
+
+            }
+
+
+            return $this->render('customer_attach_card.html.twig', [
+                'form' => $form->createView(),
+            ]);
+
+        }
     }
 
 
