@@ -16,6 +16,7 @@ use App\Form\AddCardType;
 use App\Form\AddCenter;
 use App\Form\AddEmployee;
 use App\Form\DeleteCenter;
+use App\Form\ModifyCenter;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -210,10 +211,15 @@ class AdminController extends Controller
                 $em->persist($center);
             }
 
+            $em->flush();
+
+            return $this->render('centermanagement.html.twig',[
+                'succes' => 'Votre centre à correctement été ajouté !'
+            ]);
 
         }
 
-        $em->flush();
+
 
         return $this->render('add_center.html.twig',[
             'form' => $form->createView()
@@ -240,9 +246,14 @@ class AdminController extends Controller
 
             $em->remove($center);
 
+            $em->flush();
+
+            return $this->render('centermanagement.html.twig',[
+                'succes' => 'Votre centre à correctement été supprimé !'
+            ]);
         }
 
-        $em->flush();
+
 
         return $this->render('delete_center.html.twig',[
             'form' => $form->createView()
@@ -250,4 +261,52 @@ class AdminController extends Controller
 
 
     }
+
+
+    /**
+     * @Route("/center_modify", name="admin_modify_center", methods={"GET", "POST"})
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function modify_center(EntityManagerInterface $em,Request $request)
+    {
+        $form = $this->createForm(ModifyCenter::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $repository = $em->getRepository(Center::class);
+            $test = $form->getData();
+
+            $center = $repository->find($test['center_id']->getId());
+
+            $center->setName($test['name']);
+
+            $center->setCity($test['city']);
+
+            $center->setCode($test['code']);
+
+            $em->persist($center);
+
+            $em->flush();
+
+            return $this->render('centermanagement.html.twig',[
+                'succes' => 'Votre centre à correctement été modifié !'
+            ]);
+
+
+        }
+
+
+
+        return $this->render('add_center.html.twig',[
+            'form' => $form->createView()
+        ]);
+    }
+
+
+
+
+
+
+
 }
