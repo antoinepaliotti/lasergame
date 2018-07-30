@@ -119,8 +119,8 @@ class AdminController extends Controller
      */
     public function add_card(EntityManagerInterface $em,Request $request)
     {
-        $card = New Card();
-        $form = $this->createForm(AddCardType::class,$card);
+
+        $form = $this->createForm(AddCardType::class);
 
         $form->handleRequest($request);
 
