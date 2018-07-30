@@ -1,0 +1,14 @@
+<body>
+
+{% if success is defined %}
+    <p style="color:gold;">{{ success }}</p>
+{% endif %}
+
+<h1>Rattacher sa carte</h1>
+
+{{ form(form) }}
+
+<h3><a href="{{ path('index') }}">Revenir à l'accueil</a></h3>
+
+
+</body>

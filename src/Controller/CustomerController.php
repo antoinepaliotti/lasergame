@@ -18,6 +18,8 @@ use App\Customer\CustomerRequest;
 use App\Customer\CustomerRequestHandler;
 use App\Customer\CustomerType;
 
+use App\Form\AttachCard;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -78,9 +80,38 @@ class CustomerController extends Controller
      * @Route("/espace_client", name="espace_client", methods={"GET", "POST"})
 
      */
-    public function attach_card()
+    public function espace_client()
     {
         return $this->render('espace_client.html.twig');
+
+    }
+
+
+
+    /**
+     * @Route("/customer_attach_card", name="customer_attach_card", methods={"GET", "POST"})
+
+     */
+    public function attach_card(EntityManagerInterface $em,Request $request)
+    {
+        $form = $this->createForm(AttachCard::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            //$test = $request->get('add_employee');
+            $test = $form->getData();
+
+
+
+            dump($test);
+        }
+
+
+
+        return $this->render('customer_attach_card.html.twig',[
+            'form' => $form->createView(),
+        ]);
 
     }
 
