@@ -8,7 +8,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20180727150710 extends AbstractMigration
+final class Version20180731084627 extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
@@ -17,7 +17,7 @@ final class Version20180727150710 extends AbstractMigration
 
         $this->addSql('CREATE TABLE card (id INT AUTO_INCREMENT NOT NULL, customer_id INT DEFAULT NULL, customer_nickname VARCHAR(255) NOT NULL, card_number VARCHAR(100) NOT NULL, UNIQUE INDEX UNIQ_161498D39395C3F3 (customer_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE center (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, city VARCHAR(255) NOT NULL, code INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE customer (id INT AUTO_INCREMENT NOT NULL, card_id INT DEFAULT NULL, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, roles LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', nickname VARCHAR(255) NOT NULL, adress VARCHAR(255) NOT NULL, phone VARCHAR(255) NOT NULL, birthdate DATETIME NOT NULL, center_id INT NOT NULL, UNIQUE INDEX UNIQ_81398E094ACC9A20 (card_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE customer (id INT AUTO_INCREMENT NOT NULL, card_id INT DEFAULT NULL, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, roles LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', nickname VARCHAR(255) NOT NULL, adress VARCHAR(255) NOT NULL, phone VARCHAR(255) NOT NULL, birthdate DATETIME NOT NULL, center_id INT NOT NULL, email VARCHAR(255) NOT NULL, UNIQUE INDEX UNIQ_81398E094ACC9A20 (card_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE employee (id INT AUTO_INCREMENT NOT NULL, center_id INT DEFAULT NULL, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, roles LONGTEXT NOT NULL COMMENT \'(DC2Type:array)\', INDEX IDX_5D9F75A15932F377 (center_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE card ADD CONSTRAINT FK_161498D39395C3F3 FOREIGN KEY (customer_id) REFERENCES customer (id)');
         $this->addSql('ALTER TABLE customer ADD CONSTRAINT FK_81398E094ACC9A20 FOREIGN KEY (card_id) REFERENCES card (id)');

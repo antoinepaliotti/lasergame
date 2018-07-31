@@ -217,5 +217,13 @@ class CustomerController extends Controller
         return $this->render('Index/index.html.twig');
     }
 
+    /**
+     * @Route("/forgot_password", name="customer_forgot_password", methods={"GET", "POST"})
+     */
+    public function resetpassword(\Swift_Mailer $mailer)
+    {
+        return $this->render('forgot_password.html.twig');    }
+
+
 
 }

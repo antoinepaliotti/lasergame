@@ -51,6 +51,11 @@ class Customer extends User
      */
     private $card;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $email;
+
 
 
 
@@ -136,6 +141,18 @@ class Customer extends User
     public function setCard($card): void
     {
         $this->card = $card;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
     }
 
 

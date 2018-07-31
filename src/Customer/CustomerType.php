@@ -109,6 +109,20 @@ class CustomerType extends AbstractType
 
             ])
 
+            ->add('email', TextType::class, [
+
+                'required'  => true,
+
+                'label'     => 'Email :',
+
+                'attr'      => [
+
+                    'placeholder' => 'Email :'
+
+                ]
+
+            ])
+
 
             ->add('birthdate', DateType::class, [
 

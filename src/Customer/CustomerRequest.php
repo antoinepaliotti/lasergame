@@ -46,7 +46,26 @@ class CustomerRequest
     private $password;
 
     private $roles;
+    /**
+     * @Assert\NotBlank(message="Saisissez votre email")
+     */
+    private $email;
 
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
+    {
+        $this->email = $email;
+    }
 
 
     /**

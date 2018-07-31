@@ -48,6 +48,8 @@ class CustomerFactory
 
         $customer->setPhone($request->getPhone());
 
+        $customer->setEmail($request->getEmail());
+
         $customer->setRoles($request->getRoles());
 
         $customer->setCenterId($request->getCenterId()->getId());
