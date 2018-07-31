@@ -1,4 +1,10 @@
-<body>
+{% extends "layout.html.twig" %}
+
+{% block page_title %}
+    Manager les employés
+{% endblock %}
+
+{% block content %}
 
 {% if success is defined %}
     <p style="color:gold;">{{ success }}</p>
@@ -10,4 +16,4 @@
 
 <h3><a href="{{path('admin_list_employee')}}">Voir la liste des Employés</a></h3>
 
-</body>
+{% endblock %}

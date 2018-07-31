@@ -1,4 +1,10 @@
-<body>
+{% extends "layout.html.twig" %}
+
+{% block page_title %}
+    Administration des joueurs
+{% endblock %}
+
+{% block content %}
 
 {% if success is defined %}
     <p style="color:gold;">{{ success }}</p>
@@ -11,4 +17,4 @@
 <h3><a href="{{ path('index') }}">Revenir à l'accueil</a></h3>
 
 
-</body>
+{% endblock %}

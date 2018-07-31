@@ -1,5 +1,10 @@
-<body>
+{% extends "layout.html.twig" %}
 
+{% block page_title %}
+    Administration
+{% endblock %}
+
+{% block content %}
 <h1>Bienvenue sur l'interface d'administration</h1>
 
 
@@ -11,4 +16,4 @@
 <h3><a href="{{path('admin_center_management') }}">Administration des centres</a></h3>
 
 
-</body>
+{% endblock %}

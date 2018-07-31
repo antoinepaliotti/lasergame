@@ -1,5 +1,10 @@
-<body>
+{% extends "layout.html.twig" %}
 
+{% block page_title %}
+    Manager les centres
+{% endblock %}
+
+{% block content %}
 
 {% if succes is defined %}
     <p style="color:gold;">{{ succes }}</p>
@@ -14,4 +19,4 @@
 
 <h3><a href="{{path('admin_delete_center')}}">Supprimer un Centre</a></h3>
 
-</body>
+{% endblock %}

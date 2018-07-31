@@ -1,6 +1,15 @@
-<body>
-<h1>Créer des centres</h1>
 
-{{ form(form) }}
 
-</body>
+{% extends "layout.html.twig" %}
+
+{% block page_title %}
+    Ajouter un centre
+{% endblock %}
+
+{% block content %}
+    <h1>Créer des centres</h1>
+
+    {{ form(form) }}
+{% endblock %}
+
+

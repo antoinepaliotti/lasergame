@@ -1,4 +1,11 @@
-<body>
+
+{% extends "layout.html.twig" %}
+
+{% block page_title %}
+    Connexion
+{% endblock %}
+
+{%  block content %}
 
 <h1>
     Connexion ou <a href="{{path('user_register')}}">Inscription</a>
@@ -16,4 +23,4 @@
 <a href="{{path('customer_forgot_password')}}">Mot de passe oublié ?</a>
 
 
-</body>
+{% endblock %}

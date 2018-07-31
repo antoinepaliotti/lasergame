@@ -1,4 +1,10 @@
-<body>
+{% extends "layout.html.twig" %}
+
+{% block page_title %}
+    Administration - gérer les cartes
+{% endblock %}
+
+{% block content %}
 {% if add_card is defined %}
     <p style="color:gold;">{{ add_card }}</p>
 {% endif %}
@@ -12,4 +18,4 @@
 
 <h3><a href="{{path('admin_management')}}">Retour à l'administration</a></h3>
 
-</body>
+{% endblock %}

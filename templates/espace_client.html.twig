@@ -1,6 +1,10 @@
-<body>
+{% extends "layout.html.twig" %}
 
+{% block page_title %}
+    Espace client
+{% endblock %}
 
+{% block content %}
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
     {% if success is defined %}
@@ -30,4 +34,4 @@
 {%  endif %}
 
 
-</body>
+{% endblock %}

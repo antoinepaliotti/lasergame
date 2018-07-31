@@ -1,5 +1,10 @@
-<body>
+{% extends "layout.html.twig" %}
 
+{% block page_title %}
+    Carte perdue
+{% endblock %}
+
+{% block content %}
 
 {% if success is defined %}
     <p style="color:gold;">{{ success }}</p>
@@ -13,4 +18,4 @@
     <a href="{{path('security_logout')}}">Se déconnecter</a>
     <hr>
 
-</body>
+{% endblock %}

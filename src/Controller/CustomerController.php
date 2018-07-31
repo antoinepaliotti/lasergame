@@ -82,7 +82,6 @@ class CustomerController extends Controller
 
     /**
      * @Route("/espace_client", name="espace_client", methods={"GET", "POST"})
-
      */
     public function espace_client()
     {
@@ -146,7 +145,6 @@ class CustomerController extends Controller
 
             }
 
-
             return $this->render('customer_attach_card.html.twig', [
                 'form' => $form->createView(),
             ]);
@@ -160,10 +158,7 @@ class CustomerController extends Controller
      */
     public function lostCard(EntityManagerInterface $em)
     {
-
-
         return $this->render('lost_card.html.twig');
-
     }
 
     /**
@@ -295,7 +290,7 @@ class CustomerController extends Controller
         ]);
 
     }
+    }
 
 
 
-}
