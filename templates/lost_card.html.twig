@@ -1,0 +1,16 @@
+<body>
+
+
+{% if success is defined %}
+    <p style="color:gold;">{{ success }}</p>
+{% endif %}
+
+    <h1>Carte perdue</h1>
+
+
+    <a href="{{path('customer_confirm_lost_card')}}">Cliquer ici pour confirmer la perte de votre carte<br></a>
+    <a href="{{path('espace_client')}}">Retour à l'espace client<br></a>
+    <a href="{{path('security_logout')}}">Se déconnecter</a>
+    <hr>
+
+</body>

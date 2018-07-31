@@ -91,7 +91,11 @@ class CustomerController extends Controller
 
 
     /**
-     * @Route("/customer_attach_card", name="customer_attach_card", methods={"GET", "POST"})
+     * @Route("/custo
+     *
+     *
+     *
+     *     mer_attach_card", name="customer_attach_card", methods={"GET", "POST"})
 
      */
     public function attach_card(EntityManagerInterface $em,Request $request)
@@ -151,6 +155,66 @@ class CustomerController extends Controller
             ]);
 
         }
+    }
+
+
+    /**
+     * @Route("/lost_card", name="customer_lost_card", methods={"GET", "POST"})
+     */
+    public function lostCard(EntityManagerInterface $em)
+    {
+
+
+        return $this->render('lost_card.html.twig');
+
+    }
+
+    /**
+     * @Route("/confirm_lost_card", name="customer_confirm_lost_card", methods={"GET", "POST"})
+     */
+    public function confirmlostCard(EntityManagerInterface $em)
+    {
+        $customer = $this->get('security.token_storage')->getToken()->getUser();
+        $card = $customer->getCard();
+        if ($card == null)
+        {
+            return $this->render('lost_card.html.twig', [
+                'success' => 'Vous ne possédez pas de carte !',
+            ]);
+        }
+        else
+        {
+            $customer->setCard(null);
+            $card->setCustomer(null);
+
+            $em->persist($customer);
+            $em->persist($card);
+            $em->remove($card);
+            $em->flush();
+
+            return $this->render('lost_card.html.twig', [
+                'success' => 'Carte supprimé !',
+            ]);
+        }
+    }
+
+
+    /**
+     * @Route("/email_test", name="email_test", methods={"GET", "POST"})
+     */
+    public function index(\Swift_Mailer $mailer)
+    {
+        $message = (new \Swift_Message('Hello Email'))
+            ->setFrom('lasergamewf3@gmail.com')
+            ->setTo('zephyrjukilo@gmail.com')
+            ->setBody(
+                $this->renderView(
+                    'email_test.html.twig'),
+                'text/html');
+
+        $mailer->send($message);
+
+        return $this->render('Index/index.html.twig');
     }
 
 
