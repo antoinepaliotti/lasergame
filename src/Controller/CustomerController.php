@@ -19,8 +19,11 @@ use App\Customer\CustomerRequestHandler;
 use App\Customer\CustomerType;
 
 use App\Entity\Card;
+use App\Entity\Center;
 use App\Entity\Customer;
 use App\Form\AttachCard;
+use App\Form\ForgotPassword;
+use App\Form\ResetPassword;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -28,10 +31,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class CustomerController extends Controller
 {
-
     /**
 
      * Formulaire pour créer un utilisateur
@@ -45,7 +48,6 @@ class CustomerController extends Controller
      * @return Response
 
      */
-
     public function register(Request $request, CustomerRequestHandler $customerRequestHandler)
 
     {
@@ -91,12 +93,7 @@ class CustomerController extends Controller
 
 
     /**
-     * @Route("/custo
-     *
-     *
-     *
-     *     mer_attach_card", name="customer_attach_card", methods={"GET", "POST"})
-
+     * @Route("/customer_attach_card", name="customer_attach_card", methods={"GET", "POST"})
      */
     public function attach_card(EntityManagerInterface $em,Request $request)
     {
@@ -220,9 +217,83 @@ class CustomerController extends Controller
     /**
      * @Route("/forgot_password", name="customer_forgot_password", methods={"GET", "POST"})
      */
-    public function resetpassword(\Swift_Mailer $mailer)
+    public function forgotPassword(\Swift_Mailer $mailer, Request $request, EntityManagerInterface $em)
     {
-        return $this->render('forgot_password.html.twig');    }
+        $form = $this->createForm(ForgotPassword::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $repository = $em->getRepository(Customer::class);
+            $test = $form->getData();
+
+            $username = $test['username'];
+
+            $customer = $repository->findOneBy( array(
+                'username' => $username
+            ));
+
+            dump($customer);
+
+            $email = $customer->getEmail();
+
+            $message = (new \Swift_Message('Réinitialisation de votre mot de passe Lasergame WF3'))
+                ->setFrom('lasergamewf3@gmail.com')
+                ->setTo($email)
+                ->setBody(
+                    $this->render(
+                        'email_reset_password.html.twig', [
+                            'param' => $customer->getId()
+                    ]),
+                    'text/html');
+
+            $mailer->send($message);
+
+            return $this->render('Index/index.html.twig',[
+                'success' => 'Un e-mail de réinitialisation de votre mot de passe vous a été envoyé!'
+            ]);
+
+
+        }
+
+        return $this->render('forgot_password.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/reset_password", name="customer_reset_password", methods={"GET", "POST"})
+     */
+    public function resetPassword(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder)
+    {
+        $form = $this->createForm(ResetPassword::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $customerId = $request->get('user');
+            $test = $form->getData();
+
+            $repository = $em->getRepository(Customer::class);
+            $customer = $repository->find($customerId);
+
+            $newPassword = $test['password'];
+            $customer->setPassword($encoder->encodePassword($customer, $newPassword));
+            //$user->setPassword($newPassword);
+
+            $em->persist($customer);
+            $em->flush();
+
+            return $this->render('Index/index.html.twig',[
+                'success' => 'Votre mot de passe a bien été réinitialisé!'
+            ]);
+        }
+
+        return $this->render('reset_password.html.twig', [
+            'form' => $form->createView()
+        ]);
+
+    }
 
 
 

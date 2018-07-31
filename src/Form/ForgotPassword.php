@@ -1,83 +1,44 @@
 <?php
-
 /**
-
  * Created by PhpStorm.
-
  * User: Etudiant0
-
- * Date: 02/07/2018
-
- * Time: 11:27
-
+ * Date: 31/07/2018
+ * Time: 11:13
  */
+
 namespace App\Form;
 
+
 use Symfony\Component\Form\AbstractType;
-
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-
-class LoginType extends AbstractType
-
+class ForgotPassword extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
-
             ->add('username', TextType::class, [
 
-                'label' => false,
+                'label' => "Nom d'utilisateur",
 
-                'attr' => ['placeholder' => 'Username']
-
-            ])
-
-            ->add('password', PasswordType::class, [
-
-                'label' => false,
-
-                'attr' => ['placeholder' => 'Password']
+                'attr' => ['placeholder' => "Nom d'utilisateur :"]
 
             ])
-
             ->add('submit', SubmitType::class, [
 
-                'label' => 'Connexion'
+                'label' => 'Valider'
 
             ]);
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-
         $resolver
-
             ->setDefaults([
-
                 'data_class' => null
-
             ]);
-
     }
-
-    public function getBlockPrefix()
-    {
-
-        return 'app_login';
-
-    }
-
 }
