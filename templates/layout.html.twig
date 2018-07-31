@@ -75,8 +75,10 @@
                             <ul>
                                 <li><a href="{{ path('employee_create_card') }}">Ajouter une carte</a></li>
                             </ul>
+                            <li><a href="{{ path('employee_manage_score') }}">Gérer les scores</a></li>
+
                         {% else %}
-                            <li><a href="{{ path('espace_client') }}" class="btn-get-started">Espace client</a></li>
+                            <li><a href="{{ path('espace_client') }}">Espace client</a></li>
                         {% endif %}
                     {% endif %}
 

@@ -9,6 +9,8 @@
 namespace App\Controller;
 
 
+use App\Entity\Score;
+use App\Form\ModifyScore;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller
     ;use App\Card\CardManager;
 use App\Entity\Card;
@@ -52,7 +54,6 @@ class EmployeeController extends Controller
 
         $employee = $this->get('security.token_storage')->getToken()->getUser();
 
-        dump($employee);
 
         $centerCode = $employee->getCenter()->getCode();
 
@@ -71,4 +72,57 @@ class EmployeeController extends Controller
         ]);
 
     }
+
+
+    /**
+     * @Route("/employee_manage_score", name="employee_manage_score", methods={"GET", "POST"})
+     * @Security("has_role('ROLE_EMPLOYEE')")
+     */
+    public function managescore(EntityManagerInterface $em,Request $request)
+    {
+        $form = $this->createForm(ModifyScore::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $repository = $em->getRepository(Center::class);
+
+            $test = $form->getData();
+
+            $customer = $test['customer_id'];
+
+            $card = $customer->getCard();
+
+            $score = new Score();
+
+            $score->setScoreValue($test['score']);
+
+            $score->setDate(new \DateTime());
+
+            $score->setCard($card);
+
+            $em->persist($score);
+
+            $em->flush();
+
+            return $this->render('employee_manage_score.html.twig',
+                [
+                    'form' => $form->createView()
+                ]);
+
+
+        }
+
+        return $this->render('employee_manage_score.html.twig',
+            [
+                'form' => $form->createView()
+            ]);
+
+
+    }
+
+
+
+
 }
