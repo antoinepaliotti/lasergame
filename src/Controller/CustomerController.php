@@ -243,7 +243,7 @@ class CustomerController extends Controller
                 ->setBody(
                     $this->render(
                         'email_reset_password.html.twig', [
-                            'param' => $customer->getId()
+                            'param' => urlencode(base64_encode($customer->getId()))
                     ]),
                     'text/html');
 
@@ -271,7 +271,8 @@ class CustomerController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $customerId = $request->get('user');
+            $cryptedCustomerId = $request->get('user');
+            $customerId = base64_decode($cryptedCustomerId);
             $test = $form->getData();
 
             $repository = $em->getRepository(Customer::class);
