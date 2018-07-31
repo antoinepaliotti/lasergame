@@ -236,10 +236,11 @@ class CustomerController extends Controller
                 ->setFrom('lasergamewf3@gmail.com')
                 ->setTo($email)
                 ->setBody(
-                    $this->render(
-                        'email_reset_password.html.twig', [
+                    $this->renderView(
+                        'email_reset_password.html.twig', array(
                             'param' => urlencode(base64_encode($customer->getId()))
-                    ]),
+                        )
+                     ),
                     'text/html');
 
             $mailer->send($message);
