@@ -267,22 +267,29 @@ class CustomerController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $cryptedCustomerId = $request->get('user');
-            $customerId = base64_decode($cryptedCustomerId);
-            $test = $form->getData();
+            if($cryptedCustomerId != null){
+                $customerId = base64_decode($cryptedCustomerId);
+                $test = $form->getData();
 
-            $repository = $em->getRepository(Customer::class);
-            $customer = $repository->find($customerId);
+                $repository = $em->getRepository(Customer::class);
+                $customer = $repository->find($customerId);
 
-            $newPassword = $test['password'];
-            $customer->setPassword($encoder->encodePassword($customer, $newPassword));
-            //$user->setPassword($newPassword);
+                $newPassword = $test['password'];
+                $customer->setPassword($encoder->encodePassword($customer, $newPassword));
+                //$user->setPassword($newPassword);
 
-            $em->persist($customer);
-            $em->flush();
+                $em->persist($customer);
+                $em->flush();
 
-            return $this->render('Index/index.html.twig',[
-                'success' => 'Votre mot de passe a bien été réinitialisé!'
-            ]);
+                return $this->render('Index/index.html.twig',[
+                    'success' => 'Votre mot de passe a bien été réinitialisé!'
+                ]);
+
+            }else{
+                return $this->render('Index/index.html.twig');
+            }
+
+
         }
 
         return $this->render('reset_password.html.twig', [
