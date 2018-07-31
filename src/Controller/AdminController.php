@@ -324,6 +324,19 @@ class AdminController extends Controller
 
     }
 
+    /**
+     * @Route("/center_list", name="admin_list_center", methods={"GET", "POST"})
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function listCenter(EntityManagerInterface $em)
+    {
+        $centers = $em->getRepository(Center::class)->findAll();
+
+        return $this->render('list_center.html.twig', [
+           'centers' => $centers
+        ]);
+    }
+
 
 
 
