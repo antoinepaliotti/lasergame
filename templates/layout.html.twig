@@ -29,12 +29,20 @@
                 <ul class="nav-menu">
                     <!-- ICI Gérer la classe avec menu active pour afficher le bon onglet ! -->
                     <li class="menu-active"><a href="{{ path('index') }}">Accueil</a></li>
-                    <li><a href="{{ path('user_register') }}">S'inscrire</a></li>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {% else %}
+
+                        <li><a href="{{ path('security_login') }}">Se connecter</a></li>
+                        <li><a href="{{ path('user_register') }}">S'inscrire</a></li>
+                    {% endif %}
+
+
 
 
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
                     {% if is_granted('ROLE_ADMIN') %}
+
 
 
                     <li class="menu-has-children"><a href="{{ path('admin_management') }}">Administration</a>
@@ -60,7 +68,15 @@
                             </li>
                         </ul>
                     </li>
-
+                    {% else %}
+                        {% if is_granted('ROLE_EMPLOYEE') %}
+                            <li class="menu-has-children"><a href="{{ path('customer_management') }}">Gérer les joueurs</a>
+                            <ul>
+                                <li><a href="{{ path('employee_create_card') }}">Ajouter une carte</a></li>
+                            </ul>
+                        {% else %}
+                            <li><a href="{{ path('espace_client') }}" class="btn-get-started">Espace client</a></li>
+                        {% endif %}
                     {% endif %}
 
                     {% else %}
@@ -68,7 +84,10 @@
                     {% endif %}
 
                     <li><a href="#contact">Contact Us</a></li>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <li><a href="{{ path('security_logout') }}" class="btn-get-started">Déconnexion</a></li>
+                    {% else %}
+                    {% endif %}
                 </ul>
             </nav><!-- #nav-menu-container -->
         </div>
