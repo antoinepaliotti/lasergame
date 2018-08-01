@@ -33,6 +33,10 @@ class ModifyScore extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
 
     {
+        $this->centerid = $options['centerid'];
+
+       // dump($options['centerid']);
+
         $builder
             ->add('customer_id', EntityType::class, array(
                 // looks for choices from this entity
@@ -40,7 +44,9 @@ class ModifyScore extends AbstractType
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                         ->andWhere('c.roles = :val')
-                        ->setParameter('val', 'a:1:{i:0;s:9:"ROLE_USER";}');
+                        ->andWhere('c.center_id = :val2')
+                        ->setParameter('val', 'a:1:{i:0;s:9:"ROLE_USER";}')
+                        ->setParameter('val2', $this->centerid);
                 },
                 // uses the User.username property as the visible option string
                 'choice_label' => 'username',
@@ -62,7 +68,7 @@ class ModifyScore extends AbstractType
 
             ->add('submit', SubmitType::class, [
 
-                'label' => 'Modifier le score'
+                'label' => 'Ajouter le score'
 
             ]);
 
@@ -73,7 +79,8 @@ class ModifyScore extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'data_class' => null
+                'data_class' => null,
+                'centerid' => null
             ]);
     }
 

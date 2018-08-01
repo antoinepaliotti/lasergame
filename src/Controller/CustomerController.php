@@ -16,6 +16,7 @@ use App\Customer\CustomerType;
 use App\Entity\Card;
 use App\Entity\Center;
 use App\Entity\Customer;
+use App\Entity\Employee;
 use App\Entity\Score;
 use App\Form\AttachCard;
 use App\Form\ForgotPassword;
@@ -291,50 +292,54 @@ class CustomerController extends Controller
     {
 
         $ar = $this->getUser();
-        $customerrequest = CustomerRequest::createFromCustomer($ar,$packages);
 
-
-
-        $options = [
-            'etat' => 'Modifier ses informations'
-        ];
-
-
-
-        $form = $this->createForm(CustomerType::class, $customerrequest,$options)
-            ->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $test = $form->getData();
-
-            $ar->setNickname($test->getNickname());
-
-            $ar->setUsername($test->getUsername());
-            $ar->setEmail($test->getEmail());
-            $ar->setCenterid($test->getCenterId()->getId());
-            $ar->setPhone($test->getPhone());
-            $ar->setAdress($test->getAdress());
-            $ar->setBirthdate($test->getBirthdate());
-
-            $ar->setPassword($this->encoder->encodePassword($ar, $test->getPassword()));
-
-            $em->persist($ar);
-
-            $em->flush();
-
+        if ($ar instanceof Employee)
+        {
             return $this->redirectToRoute('index');
         }
+        else {
+            $customerrequest = CustomerRequest::createFromCustomer($ar, $packages);
 
 
-        # Affichage du Formulaire dans la vue
-        return $this->render('registration.html.twig', [
-            'form' => $form->createView(),
-            'status' => 'MODIFICATION_INFO'
-        ]);
+            $options = [
+                'etat' => 'Modifier ses informations'
+            ];
 
 
+            $form = $this->createForm(CustomerType::class, $customerrequest, $options)
+                ->handleRequest($request);
 
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $test = $form->getData();
+
+                $ar->setNickname($test->getNickname());
+
+                $ar->setUsername($test->getUsername());
+                $ar->setEmail($test->getEmail());
+                $ar->setCenterid($test->getCenterId()->getId());
+                $ar->setPhone($test->getPhone());
+                $ar->setAdress($test->getAdress());
+                $ar->setBirthdate($test->getBirthdate());
+
+                $ar->setPassword($this->encoder->encodePassword($ar, $test->getPassword()));
+
+                $em->persist($ar);
+
+                $em->flush();
+
+                return $this->redirectToRoute('index');
+            }
+
+
+            # Affichage du Formulaire dans la vue
+            return $this->render('registration.html.twig', [
+                'form' => $form->createView(),
+                'status' => 'MODIFICATION_INFO'
+            ]);
+
+
+        }
     }
 
     private $encoder;    /**
@@ -354,7 +359,7 @@ class CustomerController extends Controller
     }
 
 
-    /*
+    /**
      * @Route("customer_show_scores", name="customer_show_scores", methods={"GET", "POST"})
      */
     public function showScores(EntityManagerInterface $em)

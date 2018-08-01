@@ -81,7 +81,14 @@ class EmployeeController extends Controller
      */
     public function managescore(EntityManagerInterface $em,Request $request)
     {
-        $form = $this->createForm(ModifyScore::class);
+        $employee = $this->get('security.token_storage')->getToken()->getUser();
+
+        $options = [
+            'centerid' => $employee->getCenter()->getId()
+        ];
+
+
+        $form = $this->createForm(ModifyScore::class,null,$options);
 
         $form->handleRequest($request);
 
@@ -107,9 +114,10 @@ class EmployeeController extends Controller
 
             $em->flush();
 
-            return $this->render('employee_manage_score.html.twig',
+            return $this->render('customer_management.html.twig',
                 [
-                    'form' => $form->createView()
+                    'form' => $form->createView(),
+                    'success' => 'Score correctement rajouté'
                 ]);
 
 
