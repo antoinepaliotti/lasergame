@@ -253,9 +253,13 @@ class AdminController extends Controller
 
             $centerCode = $center->getCode();
 
-            $repository = $em->getRepository(Card::class);
+            //$repository = $em->getRepository(Card::class);
 
-            $centerCards = $repository->findByCenterCode($centerCode);
+            $employees = $em->getRepository(Employee::class)->findBy(
+              array('center' => $center)
+            );
+
+            $centerCards = $em->getRepository(Card::class)->findByCenterCode($centerCode);
 
             foreach($centerCards as $centerCard){
                 $customer = $centerCard->getCustomer();
@@ -271,6 +275,10 @@ class AdminController extends Controller
             //dump($centerCards);
 
             $em->remove($center);
+
+            foreach($employees as $employee){
+                $em->remove($employee);
+            }
 
             $em->flush();
 

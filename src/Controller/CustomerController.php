@@ -354,7 +354,7 @@ class CustomerController extends Controller
     }
 
 
-    /*
+    /**
      * @Route("customer_show_scores", name="customer_show_scores", methods={"GET", "POST"})
      */
     public function showScores(EntityManagerInterface $em)
