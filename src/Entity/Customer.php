@@ -57,9 +57,6 @@ class Customer extends User
     private $email;
 
 
-
-
-
     public function getId()
     {
         return $this->id;

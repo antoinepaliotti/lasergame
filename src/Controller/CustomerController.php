@@ -1,15 +1,10 @@
 <?php
 
 /**
-
  * Created by PhpStorm.
-
  * User: Etudiant0
-
  * Date: 29/06/2018
-
  * Time: 14:55
-
  */
 
 namespace App\Controller;
@@ -21,6 +16,7 @@ use App\Customer\CustomerType;
 use App\Entity\Card;
 use App\Entity\Center;
 use App\Entity\Customer;
+use App\Entity\Score;
 use App\Form\AttachCard;
 use App\Form\ForgotPassword;
 use App\Form\ResetPassword;
@@ -37,17 +33,11 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class CustomerController extends Controller
 {
     /**
-
      * Formulaire pour créer un utilisateur
-
      * @Route("/inscription", name="user_register", methods={"GET", "POST"})
-
      * @param Request $request
-
      * @param CustomerRequestHandler $customerRequestHandler
-
      * @return Response
-
      */
     public function register(Request $request, CustomerRequestHandler $customerRequestHandler)
 
@@ -59,24 +49,24 @@ class CustomerController extends Controller
 
         $customer = new CustomerRequest();        # Créer un Formulaire permettant l'ajout d'un User
 
-        $form =$this->createForm(CustomerType::class, $customer);        # Traitement des données POST
+        $form = $this->createForm(CustomerType::class, $customer);        # Traitement des données POST
 
         $form->handleRequest($request);        # Vérification et traitement du formulaire
 
         if ($form->isSubmitted() && $form->isValid()) {
 
 
-           $customerRequestHandler->registerAsUser($customer);        # Flash Messages
+            $customerRequestHandler->registerAsUser($customer);        # Flash Messages
 
-           //$this->addFlash('notice', 'Félicitations, vous êtes maintenant inscrit !');            # Redirection sur l'accueil
+            //$this->addFlash('notice', 'Félicitations, vous êtes maintenant inscrit !');            # Redirection sur l'accueil
 
-           return $this->redirectToRoute('security_login');
+            return $this->redirectToRoute('security_login');
 
-       }        # Affichage du formulaire dans la vue
+        }        # Affichage du formulaire dans la vue
 
         return $this->render('registration.html.twig', [
 
-            'form' => $form->createView() ]);
+            'form' => $form->createView()]);
 
     }
 
@@ -91,22 +81,18 @@ class CustomerController extends Controller
     }
 
 
-
     /**
      * @Route("/customer_attach_card", name="customer_attach_card", methods={"GET", "POST"})
      */
-    public function attach_card(EntityManagerInterface $em,Request $request)
+    public function attach_card(EntityManagerInterface $em, Request $request)
     {
         $customer = $this->get('security.token_storage')->getToken()->getUser();
 
-        if ($customer->getCard() !== null)
-        {
+        if ($customer->getCard() !== null) {
             return $this->render('espace_client.html.twig', [
                 'success' => 'Vous possédez déja une carte !',
             ]);
-        }
-        else
-            {
+        } else {
             $form = $this->createForm(AttachCard::class);
 
             $form->handleRequest($request);
@@ -169,14 +155,11 @@ class CustomerController extends Controller
     {
         $customer = $this->get('security.token_storage')->getToken()->getUser();
         $card = $customer->getCard();
-        if ($card == null)
-        {
+        if ($card == null) {
             return $this->render('lost_card.html.twig', [
                 'success' => 'Vous ne possédez pas de carte !',
             ]);
-        }
-        else
-        {
+        } else {
             $customer->setCard(null);
             $card->setCustomer(null);
 
@@ -225,7 +208,7 @@ class CustomerController extends Controller
 
             $username = $test['username'];
 
-            $customer = $repository->findOneBy( array(
+            $customer = $repository->findOneBy(array(
                 'username' => $username
             ));
 
@@ -241,12 +224,12 @@ class CustomerController extends Controller
                         'email_reset_password.html.twig', array(
                             'param' => urlencode(base64_encode($customer->getId()))
                         )
-                     ),
+                    ),
                     'text/html');
 
             $mailer->send($message);
 
-            return $this->render('Index/index.html.twig',[
+            return $this->render('Index/index.html.twig', [
                 'success' => 'Un e-mail de réinitialisation de votre mot de passe vous a été envoyé!'
             ]);
 
@@ -269,7 +252,7 @@ class CustomerController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $cryptedCustomerId = $request->get('user');
-            if($cryptedCustomerId != null){
+            if ($cryptedCustomerId != null) {
                 $customerId = base64_decode($cryptedCustomerId);
                 $test = $form->getData();
 
@@ -283,11 +266,11 @@ class CustomerController extends Controller
                 $em->persist($customer);
                 $em->flush();
 
-                return $this->render('Index/index.html.twig',[
+                return $this->render('Index/index.html.twig', [
                     'success' => 'Votre mot de passe a bien été réinitialisé!'
                 ]);
 
-            }else{
+            } else {
                 return $this->render('Index/index.html.twig');
             }
 
@@ -371,7 +354,29 @@ class CustomerController extends Controller
     }
 
 
+    /*
+     * @Route("customer_show_scores", name="customer_show_scores", methods={"GET", "POST"})
+     */
+    public function showScores(EntityManagerInterface $em)
+    {
+        $customer = $this->get('security.token_storage')->getToken()->getUser();
+
+        $card = $em->getRepository(Card::class)->findOneBy(
+            array('customer' => $customer)
+        );
+
+        $scores = $em->getRepository(Score::class)->findBy(
+            array('card' => $card)
+        );
+
+        return $this->render('player_scores.html.twig', [
+           'scores' => $scores
+        ]);
+
+
     }
+
+}
 
 
 

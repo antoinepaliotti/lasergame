@@ -131,6 +131,8 @@ class CustomerType extends AbstractType
 
                 'required'  => true,
 
+                'years' => range('1970', '2018'),
+
                 'label'     => 'Date de naissance',
 
                 'attr'      => [

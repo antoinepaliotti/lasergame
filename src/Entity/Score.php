@@ -77,4 +77,6 @@ class Score
     {
         $this->card = $card;
     }
+
+
 }

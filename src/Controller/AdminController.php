@@ -251,12 +251,32 @@ class AdminController extends Controller
                 ->getRepository(Center::class)
                 ->find($test['center_id']);
 
+            $centerCode = $center->getCode();
+
+            $repository = $em->getRepository(Card::class);
+
+            $centerCards = $repository->findByCenterCode($centerCode);
+
+            foreach($centerCards as $centerCard){
+                $customer = $centerCard->getCustomer();
+                if($customer != null) {
+                    $customer->setCenterId(0);
+                    $customer->setCard(null);
+                    $em->persist($customer);
+                }
+
+                $em->remove($centerCard);
+            }
+
+            //dump($centerCards);
+
             $em->remove($center);
 
             $em->flush();
 
             return $this->render('centermanagement.html.twig',[
-                'succes' => 'Votre centre à correctement été supprimé !'
+                'succes' => 'Votre centre à correctement été supprimé !',
+                'centerCards' => $centerCards
             ]);
         }
 

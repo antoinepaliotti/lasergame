@@ -8,19 +8,22 @@
 
 <h1>Voici les cartes créées :</h1>
 
-<table>
+<table border="1px;">
 
     <tr>
-        <th>Cartes :</th>
+        <th>Numéro de carte</th>
+        <th>Utilisateur de la carte</th>
     </tr>
 
     {% for card in cards %}
 
         <tr>
-            <td>Carte n° : {{ card.cardnumber }}</td>
-        </tr>
-        <tr>
-            <td>Utilisateur de la carte : {{ card.customernickname }}<hr></td>
+            <td>{{ card.cardnumber }}</td>
+            {%  if card.customer != null %}
+                <td>{{ card.customer.username }}</td>
+            {% else %}
+                <td>Pas d'utilisateur</td>
+            {%  endif %}
         </tr>
 
     {% endfor %}

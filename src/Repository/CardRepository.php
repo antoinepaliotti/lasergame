@@ -47,4 +47,14 @@ class CardRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByCenterCode($value)
+    {
+        $query = $this->createQueryBuilder('c')
+            ->where('c.card_number LIKE :code')
+            ->setParameter('code', $value.'%')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
 }

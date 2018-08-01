@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Customer;
 use App\Entity\Score;
 use App\Form\ModifyScore;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller
@@ -120,6 +121,26 @@ class EmployeeController extends Controller
             ]);
 
 
+    }
+
+    /**
+     * @Route("/employee_list_players", name="employee_list_players", methods={"GET", "POST"})
+     * @Security("has_role('ROLE_EMPLOYEE')")
+     */
+    public function listPlayers(EntityManagerInterface $em)
+    {
+        $employee = $this->get('security.token_storage')->getToken()->getUser();
+
+        $centerId = $employee->getCenter()->getId();
+
+        $players = $em->getRepository(Customer::class)->findBy(
+            array('center_id' => $centerId)
+        );
+
+        return $this->render('list_players_employee.html.twig',
+            [
+                'players' => $players
+            ]);
     }
 
 
