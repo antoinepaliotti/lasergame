@@ -29,6 +29,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -298,6 +299,78 @@ class CustomerController extends Controller
         ]);
 
     }
+
+    /**
+     * @Route("/modify_info", name="customer_modify_info", methods={"GET", "POST"})
+     */
+    public function modifyInfo(Request $request,Packages $packages,EntityManagerInterface $em)
+
+    {
+
+        $ar = $this->getUser();
+        $customerrequest = CustomerRequest::createFromCustomer($ar,$packages);
+
+
+
+        $options = [
+            'etat' => 'Modifier ses informations'
+        ];
+
+
+
+        $form = $this->createForm(CustomerType::class, $customerrequest,$options)
+            ->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $test = $form->getData();
+
+            $ar->setNickname($test->getNickname());
+
+            $ar->setUsername($test->getUsername());
+            $ar->setEmail($test->getEmail());
+            $ar->setCenterid($test->getCenterId()->getId());
+            $ar->setPhone($test->getPhone());
+            $ar->setAdress($test->getAdress());
+            $ar->setBirthdate($test->getBirthdate());
+
+            $ar->setPassword($this->encoder->encodePassword($ar, $test->getPassword()));
+
+            $em->persist($ar);
+
+            $em->flush();
+
+            return $this->redirectToRoute('index');
+        }
+
+
+        # Affichage du Formulaire dans la vue
+        return $this->render('registration.html.twig', [
+            'form' => $form->createView(),
+            'status' => 'MODIFICATION_INFO'
+        ]);
+
+
+
+    }
+
+    private $encoder;    /**
+
+ * UserFactory constructor.
+
+ * @param UserPasswordEncoderInterface $encoder
+
+ */
+
+    public function __construct(UserPasswordEncoderInterface $encoder)
+
+    {
+
+        $this->encoder = $encoder;
+
+    }
+
+
     }
 
 

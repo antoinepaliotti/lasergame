@@ -42,6 +42,9 @@ class CustomerType extends AbstractType
 
     {
 
+        $this->etat   = $options['etat'];
+
+
         $builder
 
             ->add('username', TextType::class, [
@@ -142,11 +145,19 @@ class CustomerType extends AbstractType
             ->add('password',PasswordType::class,[
                 'label'=>"Password",
                 'required'=>true,
-            ])
+            ]);
 
-            ->add('submit',SubmitType::class,[
-                'label' => 'S\'inscrire'])
-            ;
+            if ($this->etat) {
+                $builder->
+                add('submit', SubmitType::class, [
+                    'label' => 'Modifier mes Informations Personnelles']);
+            }
+            else
+            {
+                $builder->
+                add('submit', SubmitType::class, [
+                    'label' => 'S\'inscrire']);
+            }
 
 
 
@@ -159,7 +170,7 @@ class CustomerType extends AbstractType
             //'data_class' => Article::class
 
             'data_class' => CustomerRequest::class,
-
+            'etat' => null
 
         ]);
 

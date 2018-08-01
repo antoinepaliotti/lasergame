@@ -3,7 +3,9 @@
 namespace App\Customer;
 
 use App\Entity\Center;
+use App\Entity\Customer;
 use DateTime;
+use Symfony\Component\Asset\Packages;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -196,4 +198,25 @@ class CustomerRequest
 
         return $this;
     }
+
+
+    public static function createFromCustomer(Customer $customer, Packages $packages): self
+    {
+        $ar = new self($customer->getUsername());
+
+        $ar->username = $customer->getUsername();
+        $ar->email = $customer->getEmail();
+        $ar->center_id = $customer->getCenterId();
+        $ar->nickname = $customer->getNickname();
+        $ar->phone = $customer->getPhone();
+        $ar->adress = $customer->getAdress();
+        $ar->birthdate = $customer->getBirthdate();
+        $ar->card_id = $customer->getCard();
+        $ar->roles = $customer->getRoles();
+
+        return $ar;
+    }
+
+
+
 }

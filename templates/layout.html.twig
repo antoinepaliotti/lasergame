@@ -88,7 +88,9 @@
 
                     <li><a href="#contact">Contact Us</a></li>
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <li><a href="{{ path('customer_modify_info') }}" class="btn-get-started">Modifier le Profil</a></li>
                     <li><a href="{{ path('security_logout') }}" class="btn-get-started">Déconnexion</a></li>
+
                     {% else %}
                     {% endif %}
                 </ul>

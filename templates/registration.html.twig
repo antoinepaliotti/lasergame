@@ -1,12 +1,22 @@
 {% extends "layout.html.twig" %}
 
 {% block page_title %}
-    S'inscrire
+    {% if status is defined %}
+        Modifier vos informations personnelles
+    {% else %}
+        S'inscrire
+    {% endif %}
 {% endblock %}
 
 {% block content %}
 
-<h1>Inscription</h1>
+    {% if status is defined %}
+        <h1>Modifier vos informations personnelles</h1>
+        {% else %}
+            <h1>Inscription</h1>
+    {% endif %}
+
+
 {{ form(form) }}
 
 {% endblock %}
